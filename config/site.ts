@@ -7,7 +7,9 @@ export const siteConfig = {
   /** Used for author credit and structured data. */
   authorName: "flore",
   /** One line that sits under the name on the home page. */
-  tagline: "songs in progress",
+  tagline: "songs, still growing",
+  /** Tracked-out caption printed under the flower on the home page. */
+  heroCaption: "i am a flower.",
   /** Longer blurb used for SEO and social cards. */
   description:
     "flore — song snippets, works in progress, and writing about how they get made.",

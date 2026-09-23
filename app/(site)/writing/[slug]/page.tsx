@@ -59,7 +59,7 @@ export default async function PostPage({ params }: PageProps) {
   };
 
   return (
-    <article className="max-w-[44rem] pb-12">
+    <article className="pb-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -75,12 +75,12 @@ export default async function PostPage({ params }: PageProps) {
         </Link>
       </Reveal>
 
-      <Reveal delay={0.05} as="header" className="pb-10 pt-6">
-        <h1 className="font-display text-4xl font-normal leading-[1.02] tracking-tight sm:text-5xl">
+      <Reveal delay={0.05} as="header" className="pb-14 pt-8 text-center">
+        <h1 className="mx-auto max-w-2xl font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-[3.25rem]">
           {post.title}
         </h1>
 
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border pb-6">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-b border-border pb-8">
           <time dateTime={post.date} className="label">
             {formatDate(post.date)}
           </time>
@@ -94,7 +94,7 @@ export default async function PostPage({ params }: PageProps) {
       </Reveal>
 
       {track && (
-        <Reveal delay={0.1} className="mb-10 rounded border border-border p-5">
+        <Reveal delay={0.1} className="panel mb-14 px-6 py-7">
           <div className="mb-3 flex items-baseline justify-between gap-4">
             <span className="label">Listen while you read</span>
             <span className="font-display text-lg leading-none">

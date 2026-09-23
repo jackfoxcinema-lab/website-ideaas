@@ -3,41 +3,64 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark is the default look for flore; light is the opt-in. */
+  /*
+   * Warm paper + garden. Cream ground, deep forest ink, sage for blocks and
+   * panels, marigold for the one thing on screen that should shout.
+   */
   :root {
-    --background: 0 0% 4%;
-    --foreground: 40 12% 92%;
+    --cream: 44 34% 93%;
+    --ink: 150 31% 18%;
+    --sage: 92 15% 56%;
+    --sage-light: 95 22% 82%;
+    --marigold: 37 74% 52%;
 
-    --muted: 0 0% 9%;
-    --muted-foreground: 40 6% 56%;
+    --background: var(--cream);
+    --foreground: var(--ink);
 
-    --card: 0 0% 6%;
-    --card-foreground: 40 12% 92%;
+    --muted: 44 24% 88%;
+    --muted-foreground: 150 10% 42%;
 
-    --border: 0 0% 14%;
-    --ring: 82 24% 62%;
+    --card: 44 40% 96%;
+    --card-foreground: var(--ink);
 
-    --accent: 82 26% 64%;
-    --accent-foreground: 0 0% 6%;
+    --border: 44 17% 82%;
+    --ring: var(--marigold);
 
-    --radius: 0.25rem;
+    --accent: var(--marigold);
+    --accent-foreground: 44 40% 97%;
+
+    --radius: 0.125rem;
+
+    /* Paper grain strength. Lower for the dark theme, where it reads louder. */
+    --grain-opacity: 0.16;
+    --grain-blend: multiply;
   }
 
-  .light {
-    --background: 40 22% 97%;
-    --foreground: 0 0% 8%;
+  /* Dusk: same garden, lights off. */
+  .dark {
+    --cream: 44 34% 93%;
+    --ink: 150 31% 18%;
 
-    --muted: 40 14% 92%;
-    --muted-foreground: 30 6% 38%;
+    --background: 150 24% 9%;
+    --foreground: 44 30% 90%;
 
-    --card: 40 26% 99%;
-    --card-foreground: 0 0% 8%;
+    --muted: 150 16% 14%;
+    --muted-foreground: 95 8% 58%;
 
-    --border: 36 14% 86%;
-    --ring: 82 30% 36%;
+    --card: 150 20% 12%;
+    --card-foreground: 44 30% 90%;
 
-    --accent: 82 32% 34%;
-    --accent-foreground: 40 26% 98%;
+    --border: 150 12% 20%;
+    --ring: var(--marigold);
+
+    --sage: 92 13% 42%;
+    --sage-light: 95 14% 30%;
+
+    --accent: 37 72% 56%;
+    --accent-foreground: 150 24% 9%;
+
+    --grain-opacity: 0.1;
+    --grain-blend: screen;
   }
 }
 
@@ -53,7 +76,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-feature-settings: "kern" 1, "liga" 1;
     overflow-x: hidden;
   }
 
@@ -62,46 +85,71 @@
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-ring ring-offset-4 ring-offset-background;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
 @layer components {
-  /* Small uppercase monospace label used for section eyebrows and metadata. */
+  /* Widely tracked uppercase mono — nav, eyebrows, metadata, captions. */
   .label {
-    @apply font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground;
+    @apply font-mono text-[0.65rem] uppercase tracking-[0.24em] text-muted-foreground;
   }
 
-  /* Hairline rule that fades out, used between sections. */
-  .rule {
-    @apply h-px w-full border-0 bg-gradient-to-r from-border via-border to-transparent;
+  /* The caption voice from the moodboard: lowercase, very open tracking. */
+  .caption {
+    @apply font-sans text-sm lowercase tracking-[0.38em] text-muted-foreground;
+  }
+
+  /* Soft sage panel used behind featured things. */
+  .panel {
+    background: linear-gradient(
+      160deg,
+      hsl(var(--sage-light)) 0%,
+      hsl(var(--sage-light) / 0.45) 55%,
+      hsl(var(--cream) / 0) 100%
+    );
+  }
+
+  .dark .panel {
+    background: linear-gradient(
+      160deg,
+      hsl(var(--sage-light) / 0.7) 0%,
+      hsl(var(--sage-light) / 0.25) 55%,
+      transparent 100%
+    );
   }
 }
 
 /* ── Long-form writing ─────────────────────────────────────────────── */
 
 .prose-flore {
-  @apply text-[1.0625rem] leading-[1.75] text-foreground/85;
+  @apply text-[1.0625rem] leading-[1.85] text-foreground/80;
 }
 
 .prose-flore > * + * {
-  @apply mt-6;
+  @apply mt-7;
 }
 
 .prose-flore h2 {
-  @apply font-display text-3xl font-normal tracking-tight text-foreground;
-  margin-top: 2.75rem;
-  margin-bottom: -0.5rem;
-}
-
-.prose-flore h3 {
-  @apply font-display text-2xl font-normal tracking-tight text-foreground;
-  margin-top: 2rem;
+  @apply font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.01em] text-foreground;
+  margin-top: 3.25rem;
   margin-bottom: -0.75rem;
 }
 
+.prose-flore h3 {
+  @apply font-display text-xl font-semibold leading-tight text-foreground;
+  margin-top: 2.5rem;
+  margin-bottom: -1rem;
+}
+
 .prose-flore a {
-  @apply text-foreground underline decoration-accent decoration-2 underline-offset-4 transition-opacity hover:opacity-70;
+  @apply text-foreground underline decoration-accent decoration-2 underline-offset-4 transition-opacity hover:opacity-60;
 }
 
 .prose-flore strong {
@@ -122,12 +170,13 @@
 }
 
 .prose-flore li::marker {
-  @apply text-muted-foreground;
+  @apply text-accent;
 }
 
-/* Lyrics and pull quotes. */
+/* Lyrics and pull quotes — set in sage, indented, no heavy rule. */
 .prose-flore blockquote {
-  @apply border-l-2 border-accent pl-5 font-display text-xl italic leading-relaxed text-foreground/90;
+  @apply my-10 border-l-2 pl-6 text-[1.35rem] font-light italic leading-relaxed text-foreground/75;
+  border-color: hsl(var(--sage));
 }
 
 .prose-flore blockquote p + p {
@@ -135,22 +184,23 @@
 }
 
 .prose-flore hr {
-  @apply my-10 h-px border-0 bg-border;
+  @apply my-14 h-px border-0;
+  background: hsl(var(--border));
 }
 
 .prose-flore img {
-  @apply my-8 w-full rounded border border-border;
+  @apply my-10 w-full border border-border;
 }
 
 .prose-flore code:not(pre code) {
-  @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[0.85em];
+  @apply bg-muted px-1.5 py-0.5 font-mono text-[0.82em];
 }
 
 .prose-flore pre {
-  @apply overflow-x-auto rounded border border-border bg-muted p-4 font-mono text-sm leading-relaxed;
+  @apply overflow-x-auto border border-border bg-muted p-5 font-mono text-sm leading-relaxed;
 }
 
-/* Preserve line breaks inside lyric blocks: <div class="lyrics"> in markdown. */
+/* Multi-line lyric block: <div class="lyrics"> in markdown. */
 .prose-flore .lyrics {
-  @apply whitespace-pre-line font-display text-xl italic leading-relaxed text-foreground/90;
+  @apply my-10 whitespace-pre-line text-[1.35rem] font-light italic leading-relaxed text-foreground/75;
 }

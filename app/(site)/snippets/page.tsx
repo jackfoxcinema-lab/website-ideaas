@@ -19,7 +19,7 @@ export default function SnippetsPage() {
   const all = sortTracks(tracks);
 
   return (
-    <div className="max-w-3xl pb-12">
+    <>
       <PageHeader
         eyebrow={`${all.length} ${all.length === 1 ? "piece" : "pieces"}`}
         title="Snippets"
@@ -27,11 +27,11 @@ export default function SnippetsPage() {
       />
 
       {all.length === 0 ? (
-        <p className="border-t border-border py-16 text-sm text-muted-foreground">
+        <p className="py-24 text-center text-sm text-muted-foreground">
           Nothing posted yet.
         </p>
       ) : (
-        <div className="flex flex-col border-t border-border pt-7">
+        <div className="flex flex-col pb-8">
           {all.map((track, i) => (
             <Reveal key={track.id} delay={Math.min(i * 0.05, 0.3)}>
               <TrackCard track={track} />
@@ -39,6 +39,6 @@ export default function SnippetsPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

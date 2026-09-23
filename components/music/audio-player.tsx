@@ -130,7 +130,7 @@ export function AudioPlayer({
           className
         )}
       >
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-dashed border-border">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-dashed border-sage/60">
           <Icons.play className="h-3.5 w-3.5" />
         </span>
         <span className="label normal-case tracking-normal">
@@ -171,10 +171,10 @@ export function AudioPlayer({
         disabled={failed}
         aria-label={`${isPlaying ? "Pause" : "Play"} ${title}`}
         className={cn(
-          "group flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors",
-          "border-border bg-transparent text-foreground",
+          "group flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-300",
+          "border-foreground/25 bg-transparent text-foreground",
           "hover:border-accent hover:bg-accent hover:text-accent-foreground",
-          "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border",
+          "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-foreground/25",
           "disabled:hover:bg-transparent disabled:hover:text-foreground"
         )}
       >
@@ -210,7 +210,7 @@ export function AudioPlayer({
                 handleSeekFromEvent(e.clientX);
               }
             }}
-            className="flex h-10 flex-1 cursor-pointer touch-none items-center gap-[2px] rounded-sm"
+            className="flex h-12 flex-1 cursor-pointer touch-none items-center gap-[2px]"
           >
             {peaks.map((peak, i) => {
               const played = i / peaks.length < progress;
@@ -221,14 +221,14 @@ export function AudioPlayer({
                   style={{ height: `${Math.round(peak * 100)}%` }}
                   className={cn(
                     "min-h-[2px] flex-1 rounded-[1px] transition-colors duration-150",
-                    played ? "bg-accent" : "bg-muted-foreground/30"
+                    played ? "bg-accent" : "bg-sage/45"
                   )}
                 />
               );
             })}
           </div>
 
-          <span className="shrink-0 font-mono text-[0.7rem] tabular-nums text-muted-foreground">
+          <span className="shrink-0 font-mono text-[0.68rem] tracking-[0.1em] tabular-nums text-muted-foreground">
             {isPlaying || currentTime > 0
               ? formatTime(currentTime)
               : formatTime(duration)}

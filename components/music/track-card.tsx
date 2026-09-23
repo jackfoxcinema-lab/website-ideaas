@@ -14,57 +14,62 @@ export function TrackCard({ track, className }: TrackCardProps) {
   return (
     <article
       className={cn(
-        "group relative flex flex-col gap-4 border-b border-border py-7 first:pt-0 last:border-b-0",
+        "group border-b border-border py-12 first:pt-0 last:border-b-0",
         className
       )}
     >
-      <div className="flex items-start gap-4">
+      {/* Stage and date sit above the title as quiet metadata. */}
+      <div className="mb-5 flex items-center gap-4">
+        <span className="label bg-sage/20 px-2.5 py-1 leading-none text-foreground/70">
+          {stageLabels[track.stage]}
+        </span>
+        <span className="h-px flex-1 bg-border" />
+        <time dateTime={track.date} className="label tabular-nums">
+          {formatDateShort(track.date)}
+        </time>
+      </div>
+
+      <div className="flex items-start gap-6">
         {track.cover && (
-          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded border border-border bg-muted sm:h-20 sm:w-20">
+          <div className="relative hidden h-24 w-24 shrink-0 overflow-hidden border border-border bg-muted sm:block">
             <Image
               src={track.cover}
               alt=""
               fill
-              sizes="80px"
+              sizes="96px"
               className="object-cover"
             />
           </div>
         )}
 
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h3 className="font-display text-2xl font-normal leading-none tracking-tight sm:text-[1.75rem]">
-              {track.title}
-            </h3>
-            <span className="label border border-border px-1.5 py-0.5 leading-none text-muted-foreground">
-              {stageLabels[track.stage]}
-            </span>
-            <time
-              dateTime={track.date}
-              className="label ml-auto shrink-0 tabular-nums"
-            >
-              {formatDateShort(track.date)}
-            </time>
-          </div>
+          <h3 className="font-display text-3xl font-semibold lowercase leading-none tracking-[-0.02em] sm:text-[2.5rem]">
+            {track.title}
+          </h3>
 
           {track.lyric && (
-            <p className="mt-3 font-display text-lg italic leading-snug text-foreground/75">
-              &ldquo;{track.lyric}&rdquo;
+            <p className="mt-5 max-w-xl text-lg font-light italic leading-snug text-foreground/60">
+              {track.lyric}
             </p>
           )}
 
           {track.note && (
-            <p className="mt-3 max-w-prose text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-prose text-[0.95rem] leading-relaxed text-muted-foreground">
               {track.note}
             </p>
           )}
         </div>
       </div>
 
-      <AudioPlayer id={track.id} src={track.audio} title={track.title} />
+      <AudioPlayer
+        id={track.id}
+        src={track.audio}
+        title={track.title}
+        className="mt-8"
+      />
 
       {(track.tags?.length || track.links?.length) && (
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
           {track.tags?.map((tag) => (
             <span key={tag} className="label">
               {tag}
@@ -76,7 +81,7 @@ export function TrackCard({ track, className }: TrackCardProps) {
               href={link.href}
               target="_blank"
               rel="noreferrer"
-              className="label inline-flex items-center gap-1 text-foreground transition-opacity hover:opacity-60"
+              className="label inline-flex items-center gap-1.5 text-foreground transition-opacity hover:opacity-60"
             >
               {link.label}
               <Icons.arrowUpRight className="h-3 w-3" />

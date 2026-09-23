@@ -8,12 +8,14 @@ export default function SiteLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="container py-5">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+        <div className="container py-4">
           <MainNav />
         </div>
       </header>
-      <main className="container flex-1 pt-10">{children}</main>
+      <main className="container flex-1">
+        <div className="mx-auto w-full max-w-3xl">{children}</div>
+      </main>
       <SiteFooter />
     </div>
   );

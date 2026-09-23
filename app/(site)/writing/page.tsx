@@ -16,7 +16,7 @@ export default function WritingPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="max-w-3xl pb-12">
+    <>
       <PageHeader
         eyebrow={`${posts.length} ${posts.length === 1 ? "entry" : "entries"}`}
         title="Writing"
@@ -24,11 +24,11 @@ export default function WritingPage() {
       />
 
       {posts.length === 0 ? (
-        <p className="border-t border-border py-16 text-sm text-muted-foreground">
+        <p className="py-24 text-center text-sm text-muted-foreground">
           Nothing written yet.
         </p>
       ) : (
-        <div className="flex flex-col border-t border-border pt-7">
+        <div className="flex flex-col pb-8">
           {posts.map((post, i) => (
             <Reveal key={post.slug} delay={Math.min(i * 0.05, 0.3)}>
               <PostCard post={post} />
@@ -36,6 +36,6 @@ export default function WritingPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

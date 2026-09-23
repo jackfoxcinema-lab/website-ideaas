@@ -29,8 +29,8 @@ npm run start        # serve the production build
 
 Everything you need to change lives in `config/`. In order:
 
-**1. `config/site.ts`** — the brand name, tagline, description and contact
-email. `name` is used as the wordmark in the header, footer and hero, so
+**1. `config/site.ts`** — the brand name, tagline, hero caption, description
+and contact email. `name` is used as the wordmark in the header, footer and hero, so
 changing it changes the whole site.
 
 **2. `config/socials.ts`** — your real handles. Delete rows you don't use.
@@ -135,22 +135,47 @@ takes the same shape either way.
 
 ## Design
 
-Dark by default, with a light theme behind the toggle in the header. Both are
-defined as CSS custom properties at the top of `app/globals.css` — change the
-handful of values under `:root` and `.light` and the whole site follows.
+Warm paper and a garden. Cream ground, deep forest green ink, sage for blocks
+and panels, and one marigold accent for the thing that should shout — the
+played part of a waveform, a link, a focus ring.
 
-- **Display type** — Instrument Serif, used for the wordmark, headings and
-  lyrics.
-- **Body** — Inter.
-- **Labels and metadata** — JetBrains Mono, uppercase and letter-spaced (the
-  `.label` class).
-- **Accent** — a muted sage, used for the played portion of the waveform,
-  links and focus rings.
+Light by default, with a forest-dark theme behind the toggle in the header.
+Both are a handful of CSS custom properties at the top of `app/globals.css`:
 
-Pages sit on a single left-aligned spine rather than centring, which keeps the
-full-bleed hero and the narrower reading column visually connected.
+```css
+--cream:    44 34% 93%;   /* page */
+--ink:     150 31% 18%;   /* text */
+--sage:     92 15% 56%;   /* blocks */
+--marigold: 37 74% 52%;   /* accent */
+```
 
----
+Change those four and the whole site follows, flower included.
+
+**Type** is one geometric family, Outfit, at different weights — the wordmark
+is just the heaviest cut of the body text, which is what keeps it feeling of a
+piece. Metadata, nav and captions are JetBrains Mono, uppercase and widely
+letter-spaced (the `.label` class); the `.caption` class is the lowercase,
+extra-tracked voice used under the flower.
+
+**Grain.** A full-viewport SVG turbulence layer sits over everything
+(`components/common/grain.tsx`), which is what stops the flat colour looking
+digital. It's generated, not an image, so there's no asset to ship and it
+stays crisp at any density. Strength and blend mode are theme variables,
+because noise that reads as paper on cream reads as dust on forest.
+
+**The flower** (`components/common/flower.tsx`) is drawn in code, not an
+image. Three petal shapes — a round one, one with a straight scissor edge, one
+lopsided — are placed at hand-picked angles and scales so it stays slightly
+uneven rather than symmetrical. The petals deliberately reach past the square
+so it crops them flat. `<Flower />` is the block; `<FlowerMark />` is the small
+silhouette in the header and footer.
+
+One thing worth knowing if you edit it: a CSS transform *replaces* an SVG
+`transform` attribute rather than composing with it. That's why the sway
+animation lives on its own nested group — put both on one element and the
+flower collapses to a single petal at the viewBox origin.
+
+Layout is centred with a lot of air, on a single shared measure.
 
 ## Deploying
 

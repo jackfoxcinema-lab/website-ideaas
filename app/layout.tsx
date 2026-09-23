@@ -1,26 +1,24 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import {
-  Inter,
-  Instrument_Serif,
-  JetBrains_Mono,
-} from "next/font/google";
+import { JetBrains_Mono, Outfit } from "next/font/google";
 
+import { Grain } from "@/components/common/grain";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { PlayerProvider } from "@/components/music/player-provider";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-const fontSans = Inter({
+// One geometric family across the site — the wordmark is just the heaviest
+// cut of the body text, which is what keeps the whole thing feeling of a piece.
+const fontSans = Outfit({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const fontDisplay = Instrument_Serif({
+const fontDisplay = Outfit({
   subsets: ["latin"],
-  weight: "400",
   variable: "--font-display",
   display: "swap",
 });
@@ -60,8 +58,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-    { media: "(prefers-color-scheme: light)", color: "#f8f6f2" },
+    { media: "(prefers-color-scheme: light)", color: "#f2ede0" },
+    { media: "(prefers-color-scheme: dark)", color: "#121f19" },
   ],
 };
 
@@ -82,12 +80,13 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          themes={["dark", "light"]}
+          defaultTheme="light"
+          themes={["light", "dark"]}
           enableSystem={false}
           disableTransitionOnChange
         >
           <PlayerProvider>{children}</PlayerProvider>
+          <Grain />
         </ThemeProvider>
       </body>
     </html>

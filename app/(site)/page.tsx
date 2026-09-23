@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { Flower } from "@/components/common/flower";
 import { Icons } from "@/components/common/icons";
+import { InstagramStrip } from "@/components/common/instagram-strip";
 import { Reveal } from "@/components/common/reveal";
 import { SectionHeading } from "@/components/common/section-heading";
 import { TrackCard } from "@/components/music/track-card";
@@ -10,17 +12,16 @@ import { siteConfig } from "@/config/site";
 import { primarySocial } from "@/config/socials";
 import { featuredTracks, sortTracks, tracks } from "@/config/tracks";
 import { getFeaturedPosts } from "@/lib/posts";
-import { InstagramStrip } from "@/components/common/instagram-strip";
 
 export default function HomePage() {
-  const posts = getFeaturedPosts(3);
+  const posts = getFeaturedPosts(2);
   const showcase = sortTracks(
     featuredTracks.length > 0 ? featuredTracks : tracks
   ).slice(0, 2);
 
   const PrimaryIcon = Icons[primarySocial.icon];
 
-  const personSchema = {
+  const schema = {
     "@context": "https://schema.org",
     "@type": "MusicGroup",
     name: siteConfig.name,
@@ -32,54 +33,42 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="flex min-h-[62vh] flex-col justify-center pb-20 pt-6">
-        <Reveal className="label mb-6 block">{siteConfig.tagline}</Reveal>
-
-        <Reveal delay={0.06}>
-          <h1 className="font-display text-[4rem] font-normal leading-[0.85] tracking-[-0.02em] sm:text-[7rem] md:text-[9rem]">
+      {/* ── Wordmark ─────────────────────────────────────────────── */}
+      <section className="flex flex-col items-center pb-24 pt-20 text-center sm:pt-28">
+        <Reveal>
+          <h1 className="font-display text-[5.5rem] font-semibold lowercase leading-[0.8] tracking-[-0.045em] sm:text-[8rem]">
             {siteConfig.name}
           </h1>
         </Reveal>
-
-        <Reveal delay={0.14}>
-          <p className="mt-8 max-w-lg text-lg leading-relaxed text-muted-foreground">
-            Half-finished songs, voice memos, and the notes I keep while
-            making them. Nothing here is polished — that&apos;s the point.
+        <Reveal delay={0.1}>
+          <p className="mt-7 text-lg font-light text-muted-foreground">
+            {siteConfig.tagline}
           </p>
-        </Reveal>
-
-        <Reveal
-          delay={0.22}
-          className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3"
-        >
-          <Link
-            href="/snippets"
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-85"
-          >
-            <Icons.play className="h-3.5 w-3.5" />
-            Listen
-          </Link>
-          <a
-            href={primarySocial.href}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:border-accent"
-          >
-            <PrimaryIcon className="h-3.5 w-3.5" />
-            {primarySocial.handle}
-          </a>
         </Reveal>
       </section>
 
-      {/* ── Latest snippets ──────────────────────────────────────── */}
+      {/* ── The flower ───────────────────────────────────────────── */}
+      <Reveal as="section" delay={0.14} className="flex flex-col items-center">
+        {/* The block is the artwork — it sits straight on the paper, no frame. */}
+        <Flower animate className="w-[min(24rem,78vw)]" />
+        <p className="caption mt-10">{siteConfig.heroCaption}</p>
+
+        <Link
+          href="/snippets"
+          className="mt-12 inline-flex items-center gap-3 border border-foreground/20 px-7 py-3 text-sm transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-foreground"
+        >
+          <Icons.play className="h-3 w-3" />
+          Listen
+        </Link>
+      </Reveal>
+
+      {/* ── Snippets ─────────────────────────────────────────────── */}
       {showcase.length > 0 && (
-        <Reveal as="section" delay={0.1} className="max-w-3xl py-16">
+        <Reveal as="section" delay={0.1} className="pt-32">
           <SectionHeading
-            eyebrow="Latest"
             title="Snippets"
             href="/snippets"
             linkLabel="All snippets"
@@ -94,9 +83,8 @@ export default function HomePage() {
 
       {/* ── Writing ──────────────────────────────────────────────── */}
       {posts.length > 0 && (
-        <Reveal as="section" delay={0.1} className="max-w-3xl py-16">
+        <Reveal as="section" delay={0.1} className="pt-32">
           <SectionHeading
-            eyebrow="Notes"
             title="Writing"
             href="/writing"
             linkLabel="All writing"
@@ -109,27 +97,25 @@ export default function HomePage() {
         </Reveal>
       )}
 
-      {/* ── Instagram ────────────────────────────────────────────── */}
-      <Reveal as="section" delay={0.1} className="max-w-3xl py-16">
-        <SectionHeading eyebrow="Elsewhere" title={primarySocial.name} />
+      {/* ── Elsewhere ────────────────────────────────────────────── */}
+      <Reveal as="section" delay={0.1} className="pt-32">
+        <SectionHeading title="Elsewhere" />
         {instagramPosts.length > 0 ? (
           <InstagramStrip posts={instagramPosts} />
         ) : (
-          <div className="flex flex-col items-start gap-5 rounded border border-dashed border-border p-8">
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              Shorter clips and day-to-day bits go up on{" "}
-              {primarySocial.name} first. Everything that survives ends up
-              here.
+          <div className="panel flex flex-col items-center gap-7 px-8 py-20 text-center">
+            <p className="max-w-sm text-[0.95rem] leading-relaxed text-foreground/70">
+              Shorter clips and day-to-day bits go up on {primarySocial.name}{" "}
+              first. Everything that survives ends up here.
             </p>
             <a
               href={primarySocial.href}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-accent"
+              className="inline-flex items-center gap-2.5 border border-foreground/20 bg-background/40 px-6 py-3 text-sm transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-foreground"
             >
               <PrimaryIcon className="h-4 w-4" />
               {primarySocial.handle}
-              <Icons.arrowUpRight className="h-3.5 w-3.5" />
             </a>
           </div>
         )}

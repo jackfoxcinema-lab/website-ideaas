@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="max-w-[44rem] pb-12">
+    <div className="pb-12">
       <PageHeader eyebrow="About" title={siteConfig.name} />
 
       {/* Replace this copy with your own. */}
@@ -36,8 +36,8 @@ export default function AboutPage() {
         </p>
       </Reveal>
 
-      <Reveal delay={0.16} as="section" className="mt-12">
-        <h2 className="label mb-5 border-b border-border pb-4">Links</h2>
+      <Reveal delay={0.16} as="section" className="mt-20">
+        <h2 className="label mb-2 border-b border-border pb-4">Links</h2>
         <ul className="flex flex-col divide-y divide-border">
           {socialLinks.map((social) => {
             const Icon = Icons[social.icon];
@@ -50,7 +50,7 @@ export default function AboutPage() {
                   className="group flex items-center gap-4 py-4 transition-colors hover:text-accent"
                 >
                   <Icon className="h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-accent" />
-                  <span className="font-display text-xl leading-none">
+                  <span className="font-display text-xl font-medium leading-none">
                     {social.name}
                   </span>
                   <span className="label ml-auto truncate">

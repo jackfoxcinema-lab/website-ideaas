@@ -163,18 +163,6 @@ digital. It's generated, not an image, so there's no asset to ship and it
 stays crisp at any density. Strength and blend mode are theme variables,
 because noise that reads as paper on cream reads as dust on forest.
 
-**The flower** (`components/common/flower.tsx`) is drawn in code, not an
-image. Three petal shapes — a round one, one with a straight scissor edge, one
-lopsided — are placed at hand-picked angles and scales so it stays slightly
-uneven rather than symmetrical. The petals deliberately reach past the square
-so it crops them flat. `<Flower />` is the block; `<FlowerMark />` is the small
-silhouette in the header and footer.
-
-One thing worth knowing if you edit it: a CSS transform *replaces* an SVG
-`transform` attribute rather than composing with it. That's why the sway
-animation lives on its own nested group — put both on one element and the
-flower collapses to a single petal at the viewBox origin.
-
 Layout is centred with a lot of air, on a single shared measure.
 
 ## Deploying

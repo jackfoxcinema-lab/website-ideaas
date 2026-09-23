@@ -55,15 +55,10 @@ module.exports = {
           "0%, 100%": { transform: "scaleY(0.35)" },
           "50%": { transform: "scaleY(1)" },
         },
-        sway: {
-          "0%, 100%": { transform: "rotate(-1.5deg)" },
-          "50%": { transform: "rotate(1.5deg)" },
-        },
       },
       animation: {
         "fade-up": "fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
         "bar-pulse": "bar-pulse 1.1s ease-in-out infinite",
-        sway: "sway 7s ease-in-out infinite",
       },
     },
   },

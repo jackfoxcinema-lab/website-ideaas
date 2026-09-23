@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { Flower } from "@/components/common/flower";
 import { Icons } from "@/components/common/icons";
 import { InstagramStrip } from "@/components/common/instagram-strip";
 import { Reveal } from "@/components/common/reveal";
@@ -37,7 +36,7 @@ export default function HomePage() {
       />
 
       {/* ── Wordmark ─────────────────────────────────────────────── */}
-      <section className="flex flex-col items-center pb-24 pt-20 text-center sm:pt-28">
+      <section className="flex flex-col items-center pb-8 pt-24 text-center sm:pt-32">
         <Reveal>
           <h1 className="font-display text-[5.5rem] font-semibold lowercase leading-[0.8] tracking-[-0.045em] sm:text-[8rem]">
             {siteConfig.name}
@@ -48,22 +47,17 @@ export default function HomePage() {
             {siteConfig.tagline}
           </p>
         </Reveal>
+
+        <Reveal delay={0.18}>
+          <Link
+            href="/snippets"
+            className="mt-12 inline-flex items-center gap-3 border border-foreground/20 px-7 py-3 text-sm transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-foreground"
+          >
+            <Icons.play className="h-3 w-3" />
+            Listen
+          </Link>
+        </Reveal>
       </section>
-
-      {/* ── The flower ───────────────────────────────────────────── */}
-      <Reveal as="section" delay={0.14} className="flex flex-col items-center">
-        {/* The block is the artwork — it sits straight on the paper, no frame. */}
-        <Flower animate className="w-[min(24rem,78vw)]" />
-        <p className="caption mt-10">{siteConfig.heroCaption}</p>
-
-        <Link
-          href="/snippets"
-          className="mt-12 inline-flex items-center gap-3 border border-foreground/20 px-7 py-3 text-sm transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-foreground"
-        >
-          <Icons.play className="h-3 w-3" />
-          Listen
-        </Link>
-      </Reveal>
 
       {/* ── Snippets ─────────────────────────────────────────────── */}
       {showcase.length > 0 && (

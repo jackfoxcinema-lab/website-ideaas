@@ -8,8 +8,6 @@ export const siteConfig = {
   authorName: "flore",
   /** One line that sits under the name on the home page. */
   tagline: "songs, still growing",
-  /** Tracked-out caption printed under the flower on the home page. */
-  heroCaption: "i am a flower.",
   /** Longer blurb used for SEO and social cards. */
   description:
     "flore — song snippets, works in progress, and writing about how they get made.",

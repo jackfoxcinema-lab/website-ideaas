@@ -1,5 +1,8 @@
 import type { MetadataRoute } from "next";
 
+// Emitted as a file at build time; required for `output: export`.
+export const dynamic = "force-static";
+
 import { siteConfig } from "@/config/site";
 import { getAllPosts } from "@/lib/posts";
 

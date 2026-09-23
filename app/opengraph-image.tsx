@@ -1,5 +1,8 @@
 import { ImageResponse } from "next/og";
 
+// Emitted as a file at build time; required for `output: export`.
+export const dynamic = "force-static";
+
 import { siteConfig } from "@/config/site";
 
 export const alt = `${siteConfig.name} — ${siteConfig.tagline}`;

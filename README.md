@@ -183,6 +183,17 @@ Push to GitHub, then import the repo on [Vercel](https://vercel.com) — it
 detects Next.js with no configuration. Set `NEXT_PUBLIC_SITE_URL` in the
 project's environment variables, and point your domain at it.
 
+### Or export it as plain files
+
+The site has no server-side features, so it can also be exported as static
+HTML and dropped on any host (GitHub Pages, Netlify drop, S3, a USB stick):
+
+```bash
+STATIC_EXPORT=true npm run build   # writes ./out
+```
+
+The flag is opt-in so the default build stays a normal Next build.
+
 The Open Graph image is generated at build time from your brand name
 (`app/opengraph-image.tsx`), so there's no PNG to keep in sync.
 

@@ -38,59 +38,55 @@ export interface Track {
  * The songs, newest first — though it sorts by date anyway, so the order in
  * here doesn't matter.
  *
- * TODO: replace the three placeholders below with the three songs that are
- * already up on the channel. For each one you need the title, the date it
- * went up, and the YouTube link. Everything else is optional.
+ * The YouTube ids are real. The titles, dates and order are NOT — they're
+ * placeholders in the order the links were pasted. Fix:
  *
- * To tie a song to the world, put its `id` in the `song:` field of a
- * markdown file in content/world — the entries then show up under the song
- * on /songs, and the song shows up on the entry's page.
+ *   title:  what the song is actually called
+ *   date:   YYYY-MM-DD it went up (this is what orders the page)
+ *   stage:  "released" for anything public, "unreleased" for anything not
+ *
+ * `id` seeds nothing visible now that these play from YouTube, but world
+ * entries point at it (content/world/*.md, the `song:` field), so changing
+ * an id means updating any entry that names it.
  */
 export const tracks: Track[] = [
   {
     id: "song-one",
-    title: "first song",
+    title: "first song", // TODO: real title
     stage: "released",
-    date: "2026-09-14",
-    youtube: "", // -> paste the YouTube link here
+    date: "2026-09-14", // TODO: real date
+    youtube: "https://youtu.be/sIiM4v-H8oM",
     audio: "",
-    note: "",
-    tags: [],
     featured: true,
   },
   {
     id: "song-two",
-    title: "second song",
+    title: "second song", // TODO: real title
     stage: "released",
-    date: "2026-08-30",
-    youtube: "",
+    date: "2026-08-30", // TODO: real date
+    youtube: "https://youtu.be/zbntTakEjM8",
     audio: "",
-    note: "",
-    tags: [],
     featured: true,
   },
   {
     id: "song-three",
-    title: "third song",
+    title: "third song", // TODO: real title
     stage: "released",
-    date: "2026-08-02",
-    youtube: "",
+    date: "2026-08-02", // TODO: real date
+    youtube: "https://youtu.be/LgWTL4fmo2U",
     audio: "",
-    note: "",
-    tags: [],
   },
   {
-    // The one that's finished but not up yet. Listing it as `unreleased`
-    // with no player is the point — it says the work is still moving
-    // without pretending there's something to press play on.
+    // The fourth link. Marked unreleased because you said one song was
+    // "ready to go" rather than up — if it IS public, change stage to
+    // "released". If it's unlisted, decide before deploying: embedding it
+    // here makes it findable to anyone who opens the site.
     id: "song-four",
-    title: "next one",
+    title: "fourth song", // TODO: real title
     stage: "unreleased",
-    date: "2026-09-23",
-    youtube: "",
+    date: "2026-09-23", // TODO: real date
+    youtube: "https://youtu.be/vdbbU5g6RdM",
     audio: "",
-    note: "Finished. Waiting on the video.",
-    tags: [],
   },
 ];
 

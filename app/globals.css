@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark is the default look for flore; light is the opt-in. */
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 40 12% 92%;
+
+    --muted: 0 0% 9%;
+    --muted-foreground: 40 6% 56%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 40 12% 92%;
+
+    --border: 0 0% 14%;
+    --ring: 82 24% 62%;
+
+    --accent: 82 26% 64%;
+    --accent-foreground: 0 0% 6%;
+
+    --radius: 0.25rem;
+  }
+
+  .light {
+    --background: 40 22% 97%;
+    --foreground: 0 0% 8%;
+
+    --muted: 40 14% 92%;
+    --muted-foreground: 30 6% 38%;
+
+    --card: 40 26% 99%;
+    --card-foreground: 0 0% 8%;
+
+    --border: 36 14% 86%;
+    --ring: 82 30% 36%;
+
+    --accent: 82 32% 34%;
+    --accent-foreground: 40 26% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Small uppercase monospace label used for section eyebrows and metadata. */
+  .label {
+    @apply font-mono text-[0.68rem] uppercase tracking-[0.18em] text-muted-foreground;
+  }
+
+  /* Hairline rule that fades out, used between sections. */
+  .rule {
+    @apply h-px w-full border-0 bg-gradient-to-r from-border via-border to-transparent;
+  }
+}
+
+/* ── Long-form writing ─────────────────────────────────────────────── */
+
+.prose-flore {
+  @apply text-[1.0625rem] leading-[1.75] text-foreground/85;
+}
+
+.prose-flore > * + * {
+  @apply mt-6;
+}
+
+.prose-flore h2 {
+  @apply font-display text-3xl font-normal tracking-tight text-foreground;
+  margin-top: 2.75rem;
+  margin-bottom: -0.5rem;
+}
+
+.prose-flore h3 {
+  @apply font-display text-2xl font-normal tracking-tight text-foreground;
+  margin-top: 2rem;
+  margin-bottom: -0.75rem;
+}
+
+.prose-flore a {
+  @apply text-foreground underline decoration-accent decoration-2 underline-offset-4 transition-opacity hover:opacity-70;
+}
+
+.prose-flore strong {
+  @apply font-semibold text-foreground;
+}
+
+.prose-flore ul,
+.prose-flore ol {
+  @apply space-y-2 pl-5;
+}
+
+.prose-flore ul {
+  @apply list-disc;
+}
+
+.prose-flore ol {
+  @apply list-decimal;
+}
+
+.prose-flore li::marker {
+  @apply text-muted-foreground;
+}
+
+/* Lyrics and pull quotes. */
+.prose-flore blockquote {
+  @apply border-l-2 border-accent pl-5 font-display text-xl italic leading-relaxed text-foreground/90;
+}
+
+.prose-flore blockquote p + p {
+  @apply mt-3;
+}
+
+.prose-flore hr {
+  @apply my-10 h-px border-0 bg-border;
+}
+
+.prose-flore img {
+  @apply my-8 w-full rounded border border-border;
+}
+
+.prose-flore code:not(pre code) {
+  @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[0.85em];
+}
+
+.prose-flore pre {
+  @apply overflow-x-auto rounded border border-border bg-muted p-4 font-mono text-sm leading-relaxed;
+}
+
+/* Preserve line breaks inside lyric blocks: <div class="lyrics"> in markdown. */
+.prose-flore .lyrics {
+  @apply whitespace-pre-line font-display text-xl italic leading-relaxed text-foreground/90;
+}

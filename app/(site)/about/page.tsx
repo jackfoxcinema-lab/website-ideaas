@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="pb-12">
-      <PageHeader eyebrow="About" title={siteConfig.name} />
+      <PageHeader eyebrow="About" title={siteConfig.name} lowercase={false} />
 
       {/* Replace this copy with your own. */}
       <Reveal delay={0.1} className="prose-flore">

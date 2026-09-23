@@ -2,10 +2,10 @@
  * Everything brand-level lives here. Edit this file first.
  */
 export const siteConfig = {
-  /** Brand / artist name, lowercase everywhere by design. */
-  name: "flore",
+  /** Brand / artist name, set in caps wherever it appears. */
+  name: "FLORE",
   /** Used for author credit and structured data. */
-  authorName: "flore",
+  authorName: "FLORE",
   /** One line that sits under the name on the home page. */
   tagline: "songs, still growing",
   /** Longer blurb used for SEO and social cards. */

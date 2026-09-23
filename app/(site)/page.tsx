@@ -38,7 +38,7 @@ export default function HomePage() {
       {/* ── Wordmark ─────────────────────────────────────────────── */}
       <section className="flex flex-col items-center pb-8 pt-24 text-center sm:pt-32">
         <Reveal>
-          <h1 className="font-display text-[5.5rem] font-semibold lowercase leading-[0.8] tracking-[-0.045em] sm:text-[8rem]">
+          <h1 className="font-display text-[4.5rem] font-semibold leading-[0.85] tracking-[-0.02em] sm:text-[6.75rem]">
             {siteConfig.name}
           </h1>
         </Reveal>

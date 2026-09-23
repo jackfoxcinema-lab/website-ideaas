@@ -10,7 +10,7 @@ export function SiteFooter() {
       <div className="container flex flex-col items-center gap-10 py-20 text-center">
         <Link
           href="/"
-          className="font-display text-3xl font-semibold lowercase leading-none tracking-[-0.03em] transition-opacity hover:opacity-60"
+          className="font-display text-2xl font-semibold leading-none tracking-[0.02em] transition-opacity hover:opacity-60"
         >
           {siteConfig.name}
         </Link>

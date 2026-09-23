@@ -35,7 +35,7 @@ export function MainNav() {
         <div className="flex items-center gap-8">
           <Link
             href="/"
-            className="shrink-0 font-display text-xl font-semibold lowercase leading-none tracking-[-0.03em] transition-opacity hover:opacity-60"
+            className="shrink-0 font-display text-lg font-semibold leading-none tracking-[0.02em] transition-opacity hover:opacity-60"
           >
             {siteConfig.name}
           </Link>

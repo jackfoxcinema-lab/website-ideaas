@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { FlowerMark } from "@/components/common/flower";
 import { Icons } from "@/components/common/icons";
 import { siteConfig } from "@/config/site";
 import { socialLinks } from "@/config/socials";
@@ -11,10 +10,9 @@ export function SiteFooter() {
       <div className="container flex flex-col items-center gap-10 py-20 text-center">
         <Link
           href="/"
-          aria-label={`${siteConfig.name} — home`}
-          className="text-foreground transition-opacity hover:opacity-70"
+          className="font-display text-3xl font-semibold lowercase leading-none tracking-[-0.03em] transition-opacity hover:opacity-60"
         >
-          <FlowerMark className="w-8" />
+          {siteConfig.name}
         </Link>
 
         <p className="caption">{siteConfig.tagline}</p>

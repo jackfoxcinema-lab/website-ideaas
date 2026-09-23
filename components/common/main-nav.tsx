@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 
-import { FlowerMark } from "@/components/common/flower";
 import { Icons } from "@/components/common/icons";
 import { ModeToggle } from "@/components/common/mode-toggle";
 import { mainNav } from "@/config/nav";
@@ -36,10 +35,9 @@ export function MainNav() {
         <div className="flex items-center gap-8">
           <Link
             href="/"
-            aria-label={`${siteConfig.name} — home`}
-            className="group shrink-0 text-foreground transition-opacity hover:opacity-70"
+            className="shrink-0 font-display text-xl font-semibold lowercase leading-none tracking-[-0.03em] transition-opacity hover:opacity-60"
           >
-            <FlowerMark className="w-6" />
+            {siteConfig.name}
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">

@@ -101,26 +101,3 @@ export function Flower({
     </svg>
   );
 }
-
-/** Tiny flower mark for the nav, footer and empty states. */
-export function FlowerMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 100 100"
-      aria-hidden="true"
-      className={cn("h-auto w-full", className)}
-    >
-      <g transform="translate(50 50)">
-        {PETALS.map((p) => (
-          <path
-            key={p.angle}
-            d={PETALS_SHAPES[p.shape]}
-            fill="currentColor"
-            transform={`rotate(${p.angle + p.tilt}) scale(${p.scale * 0.82})`}
-          />
-        ))}
-        <circle r="13.5" fill="hsl(var(--marigold))" />
-      </g>
-    </svg>
-  );
-}

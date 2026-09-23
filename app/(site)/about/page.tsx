@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { Icons } from "@/components/common/icons";
 import { PageHeader } from "@/components/common/page-header";
@@ -20,19 +21,21 @@ export default function AboutPage() {
       {/* Replace this copy with your own. */}
       <Reveal delay={0.1} className="prose-flore">
         <p>
-          I write songs and put the unfinished ones here. Some are twenty
-          seconds long. Some have been sitting in a folder for two years.
-          Posting them is how I stop sanding them down forever.
+          I write songs, and they all come from the same place. Not a genre — a
+          place. The first few are up on YouTube and the next one is finished,
+          and somewhere along the way it stopped being a set of tracks and
+          started being one thing with a shape.
         </p>
         <p>
-          Alongside the audio I keep notes — what a song started as, what got
-          cut, which accident turned out to be the good part. If you make
-          things too, that&apos;s probably the more useful half of the site.
+          So this site has a <Link href="/world">world</Link> in it. Every room,
+          person and object the songs turn up gets written down there as it
+          arrives. It is nowhere near finished and there is no date by which it
+          will be. That is the project.
         </p>
         <h2>Where to find me</h2>
         <p>
-          Short clips go up on Instagram first. Longer pieces and anything
-          finished lands here.
+          Songs and videos go up on YouTube first. Everything that explains them
+          ends up here.
         </p>
       </Reveal>
 

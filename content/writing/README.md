@@ -11,7 +11,7 @@ title: "Post title"
 date: "2026-09-14"        # YYYY-MM-DD, used for sorting
 description: "One or two lines shown in the list and in link previews."
 tags: ["process", "demos"] # optional
-track: "kitchen-window"    # optional — id from config/tracks.ts, embeds a player
+track: "song-one"          # optional — id from config/tracks.ts, embeds a player
 featured: true             # optional — pins it to the home page
 ---
 ```

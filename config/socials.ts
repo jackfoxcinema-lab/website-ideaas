@@ -17,17 +17,20 @@ export interface SocialLink {
  */
 export const socialLinks: SocialLink[] = [
   {
+    name: "YouTube",
+    // TODO: your real channel handle and URL.
+    handle: "@FLORE",
+    href: "https://youtube.com/@FLORE",
+    icon: "youtube",
+    // The songs live here, so this is the icon in the header and the button
+    // on the home page.
+    primary: true,
+  },
+  {
     name: "Instagram",
     handle: "@flore",
     href: "https://instagram.com/flore",
     icon: "instagram",
-    primary: true,
-  },
-  {
-    name: "YouTube",
-    handle: "@flore",
-    href: "https://youtube.com/@flore",
-    icon: "youtube",
   },
   {
     name: "Spotify",

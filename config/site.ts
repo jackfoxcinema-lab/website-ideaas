@@ -7,10 +7,10 @@ export const siteConfig = {
   /** Used for author credit and structured data. */
   authorName: "FLORE",
   /** One line that sits under the name on the home page. */
-  tagline: "songs, still growing",
+  tagline: "songs from one place, still growing",
   /** Longer blurb used for SEO and social cards. */
   description:
-    "flore — song snippets, works in progress, and writing about how they get made.",
+    "FLORE — songs, and the ongoing world they come from. An unfinished body of work, added to as it arrives.",
   /** Set NEXT_PUBLIC_SITE_URL in production (e.g. on Vercel) to your real domain. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://flore.example.com",
   /** Path to the Open Graph image inside /public. */
@@ -20,11 +20,11 @@ export const siteConfig = {
   keywords: [
     "flore",
     "music",
-    "song snippets",
-    "demos",
-    "works in progress",
+    "concept album",
+    "worldbuilding",
     "songwriting",
-    "producer",
+    "body of work",
     "independent artist",
+    "youtube musician",
   ],
 } as const;

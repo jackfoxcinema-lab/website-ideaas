@@ -1,7 +1,9 @@
 # flore
 
-A personal brand site for a musician: song snippets with a real player,
-long-form writing, and links out to Instagram and the rest.
+A site for a musician with an ongoing project: the songs, and the world
+they come from. Songs play from YouTube, the world is a folder of markdown
+files that grows one entry at a time, and there's long-form writing
+alongside both.
 
 Built with Next.js (App Router), TypeScript and Tailwind. Every page is
 statically generated, so it deploys free on Vercel, Netlify or Cloudflare
@@ -27,52 +29,72 @@ npm run start        # serve the production build
 
 ## The five-minute setup
 
-Everything you need to change lives in `config/`. In order:
+Everything you need to change lives in `config/` and `content/`. In order:
 
-**1. `config/site.ts`** — the brand name, tagline, hero caption, description
-and contact email. `name` is used as the wordmark in the header, footer and hero, so
+**1. `config/site.ts`** — the brand name, tagline, description and contact
+email. `name` is used as the wordmark in the header, footer and hero, so
 changing it changes the whole site.
 
 **2. `config/socials.ts`** — your real handles. Delete rows you don't use.
 Whichever entry is marked `primary: true` becomes the icon in the header and
-the button on the home page, so put Instagram there.
+the button on the home page; it ships set to YouTube.
 
-**3. `config/tracks.ts`** — your snippets. See below.
+**3. `config/tracks.ts`** — your songs, with their YouTube links. See below.
 
-**4. `content/writing/*.md`** — your posts. See below.
+**4. `config/world.ts`** — the world's name, premise and status line. Write
+the premise in your own words before anything else; it's the first thing
+anyone reads on `/world`.
 
-**5. Delete the two example posts** (`content/writing/kitchen-window.md`,
-`content/writing/starting-over.md`) and the three example tracks once you
-have your own.
+**5. `content/world/*.md`** — the entries. See below, and
+`content/world/README.md` for the full reference.
+
+**6. `content/writing/*.md`** — your posts.
+
+**7. Delete the examples** once you have your own: four entries in
+`content/world/`, two posts in `content/writing/`, and the four placeholder
+tracks in `config/tracks.ts`.
 
 Before you deploy, set `NEXT_PUBLIC_SITE_URL` to your real domain so the
 sitemap, canonical URLs and social cards point at the right place.
 
 ---
 
-## Posting a snippet
+## Posting a song
 
-1. Drop the audio file into `public/audio/` — mp3 or m4a, ideally under 5 MB.
-2. Add an entry to `config/tracks.ts`:
+Songs live on YouTube. Hit Share on the video, paste the link, done:
 
 ```ts
 {
-  id: "kitchen-window",                    // url-safe, also seeds the waveform
-  title: "kitchen window",
-  stage: "snippet",                        // snippet | demo | unreleased | released
-  date: "2026-09-14",                      // sorts newest first
-  audio: "/audio/kitchen-window.mp3",
-  note: "Recorded in one take on a phone at 2am.",
-  lyric: "and the light came through the kitchen window",
-  tags: ["voice memo", "guitar"],
-  featured: true,                          // pins it to the home page
+  id: "song-one",                  // url-safe; world entries point at this
+  title: "first song",
+  stage: "released",               // snippet | demo | unreleased | released
+  date: "2026-09-14",              // sorts newest first
+  youtube: "https://youtu.be/dQw4w9WgXcQ",
+  audio: "",
+  note: "One line of context.",
+  lyric: "a few words of the lyric",
+  tags: ["guitar"],
+  featured: true,                  // pins it to the home page
 }
 ```
 
-Leave `audio: ""` and the card shows a tidy "Audio coming soon" instead of a
-player — useful for listing something before the file is ready.
+`youtube` takes a full link (watch URL, `youtu.be`, Short, embed URL) or a
+bare video id — whatever's easiest to paste.
 
-### About the waveform
+**Nothing loads from YouTube until someone presses play.** The card shows the
+video's own still frame and swaps in the real player on click. A raw embed
+would pull about a megabyte of YouTube's player and set cookies on page load
+for every video on the page, whether or not anyone watches. See
+`components/music/youtube-embed.tsx`.
+
+### Songs without a video
+
+Leave `youtube` empty and set `audio` to a file in `public/audio/` instead —
+that gets the waveform player, which is the better shape for a voice memo or
+a snippet. Leave both empty and the card shows a tidy "Audio coming soon",
+which is how to list something that's finished but not up yet.
+
+#### About the waveform
 
 The bars aren't decoded from the audio; that would mean shipping the whole
 file to the browser just to draw a picture. Instead each track's `id` seeds a
@@ -81,8 +103,49 @@ shape, the server and client agree on it, and there's no layout jump on load.
 The bars fill with the accent colour as the track plays, and you can click or
 drag anywhere on them to seek.
 
-Only one snippet plays at a time — starting a second one pauses the first
+Only one track plays at a time — starting a second one pauses the first
 (`components/music/player-provider.tsx`).
+
+---
+
+## The world
+
+This is the part that's meant to keep growing. One markdown file per entry in
+`content/world/`; the filename becomes the URL.
+
+```markdown
+---
+title: "the glasshouse"
+kind: place                # place | figure | object | event | fragment
+date: "2026-09-14"         # when it entered the world
+description: "One or two lines, shown in the index and in link previews."
+song: "song-one"           # optional — an id from config/tracks.ts
+youtube: ""                # optional — a video that belongs to this entry
+image: "/world/glass.jpg"  # optional — a file in public/world
+tags: ["glass", "green"]
+order: 1                   # optional — hand-place it; unset sorts by date
+featured: true             # optional — pins it to the home page
+---
+
+Your entry here.
+```
+
+Three things worth knowing:
+
+- **`kind` builds the index.** `/world` groups entries into the sections
+  listed in `config/world.ts`. Rename them, add your own, or use `fragment`
+  for anything you can't place yet.
+- **`song` wires the two halves together.** The entry's page gets a player for
+  that song, and the song's card on `/songs` lists every entry that names it.
+  Entries also link sideways to their neighbours, so a listener who follows
+  one song can keep walking.
+- **`youtube` is for video that belongs to the entry rather than to a song** —
+  a sit-down video, a walkthrough, a scene. Same click-to-load player.
+
+Drafts work the same way as posts: prefix a filename with `_` and it stays
+out of the site.
+
+Full reference: `content/world/README.md`.
 
 ---
 
@@ -97,7 +160,7 @@ title: "The fridge stays in"
 date: "2026-09-14"
 description: "One or two lines, shown in the list and in link previews."
 tags: ["process", "demos"]
-track: "kitchen-window"    # optional — embeds that snippet's player in the post
+track: "song-one"          # optional — embeds that song's player in the post
 featured: true             # optional — pins it to the home page
 ---
 
@@ -191,17 +254,21 @@ The Open Graph image is generated at build time from your brand name
 
 ```
 app/
-  (site)/            pages: home, snippets, writing, writing/[slug], about
+  (site)/            pages: home, songs, world, world/[slug], writing,
+                     writing/[slug], about
   globals.css        theme tokens + long-form typography
   opengraph-image.tsx
 components/
   common/            nav, footer, theme toggle, icons, reveal
-  music/             audio player, waveform, track card
+  music/             audio player, waveform, YouTube embed, track card
+  world/             entry card
   writing/           post card
-config/               ← everything you edit
+config/               ← site, socials, tracks, world, nav
+content/world/        ← the world, one markdown file per entry
 content/writing/      ← your posts
-lib/                  markdown parsing, waveform generator, helpers
-public/audio/         ← your audio files
+lib/                  markdown parsing, waveform generator, YouTube helpers
+public/audio/         ← audio files, for anything not on YouTube
+public/world/         ← images for world entries
 ```
 
 ---

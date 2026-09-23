@@ -3,7 +3,7 @@ title: "The fridge stays in"
 date: "2026-09-14"
 description: "A voice memo recorded at 2am with a fridge humming in the background, and why I'm not re-recording it."
 tags: ["process", "demos"]
-track: "kitchen-window"
+track: "song-one"
 featured: true
 ---
 

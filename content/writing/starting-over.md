@@ -3,7 +3,7 @@ title: "Twelve starts, one finish"
 date: "2026-08-30"
 description: "On the folder of unfinished songs, and deciding to post them instead of fixing them."
 tags: ["process", "notes"]
-track: "slow-tide"
+track: "song-two"
 featured: true
 ---
 

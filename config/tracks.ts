@@ -8,8 +8,16 @@ export interface Track {
   /** ISO date (YYYY-MM-DD). Used for sorting, newest first. */
   date: string;
   /**
+   * The song on YouTube — paste the whole link from the Share button, or
+   * just the video id. This is the main player for anything that's up on the
+   * channel; leave it empty for things that only exist as a file.
+   */
+  youtube?: string;
+  /**
    * Audio file under /public/audio. Drop an mp3/m4a/wav in there and point
-   * at it here. Leave as "" and the card renders without a player.
+   * at it here. Used when there's no `youtube` link — voice memos, snippets,
+   * anything not worth a video yet. Leave both empty and the card renders
+   * without a player.
    */
   audio: string;
   /** Square-ish artwork under /public/tracks. Optional. */
@@ -27,39 +35,62 @@ export interface Track {
 }
 
 /**
- * Add newest first — it sorts by date anyway, so order here doesn't matter.
- * These three are placeholders showing the shape; replace them.
+ * The songs, newest first — though it sorts by date anyway, so the order in
+ * here doesn't matter.
+ *
+ * TODO: replace the three placeholders below with the three songs that are
+ * already up on the channel. For each one you need the title, the date it
+ * went up, and the YouTube link. Everything else is optional.
+ *
+ * To tie a song to the world, put its `id` in the `song:` field of a
+ * markdown file in content/world — the entries then show up under the song
+ * on /songs, and the song shows up on the entry's page.
  */
 export const tracks: Track[] = [
   {
-    id: "kitchen-window",
-    title: "kitchen window",
-    stage: "snippet",
+    id: "song-one",
+    title: "first song",
+    stage: "released",
     date: "2026-09-14",
-    audio: "", // -> "/audio/kitchen-window.mp3" once the file is in public/audio
-    note: "Recorded in one take on a phone at 2am. The hum is the fridge and it stays in.",
-    lyric: "and the light came through the kitchen window / like it had somewhere to be",
-    tags: ["voice memo", "guitar", "unfinished"],
-    featured: true,
-  },
-  {
-    id: "slow-tide",
-    title: "slow tide",
-    stage: "demo",
-    date: "2026-08-30",
-    audio: "", // -> "/audio/slow-tide.mp3" once the file is in public/audio
-    note: "Built around a tape loop that kept slipping out of time. Left the slip in.",
-    tags: ["tape loop", "synth", "ambient"],
-    featured: true,
-  },
-  {
-    id: "no-title-yet",
-    title: "no title yet",
-    stage: "snippet",
-    date: "2026-08-02",
+    youtube: "", // -> paste the YouTube link here
     audio: "",
-    note: "Twenty seconds of a chorus I can't finish. Posting it here so I stop hiding it.",
-    tags: ["fragment"],
+    note: "",
+    tags: [],
+    featured: true,
+  },
+  {
+    id: "song-two",
+    title: "second song",
+    stage: "released",
+    date: "2026-08-30",
+    youtube: "",
+    audio: "",
+    note: "",
+    tags: [],
+    featured: true,
+  },
+  {
+    id: "song-three",
+    title: "third song",
+    stage: "released",
+    date: "2026-08-02",
+    youtube: "",
+    audio: "",
+    note: "",
+    tags: [],
+  },
+  {
+    // The one that's finished but not up yet. Listing it as `unreleased`
+    // with no player is the point — it says the work is still moving
+    // without pretending there's something to press play on.
+    id: "song-four",
+    title: "next one",
+    stage: "unreleased",
+    date: "2026-09-23",
+    youtube: "",
+    audio: "",
+    note: "Finished. Waiting on the video.",
+    tags: [],
   },
 ];
 

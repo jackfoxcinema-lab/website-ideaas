@@ -1,16 +1,24 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { Icons } from "@/components/common/icons";
 import { AudioPlayer } from "@/components/music/audio-player";
+import { YouTubeEmbed, YouTubeLink } from "@/components/music/youtube-embed";
 import { stageLabels, type Track } from "@/config/tracks";
+import type { EntryMeta } from "@/lib/world";
 import { cn, formatDateShort } from "@/lib/utils";
+import { youtubeId } from "@/lib/youtube";
 
 interface TrackCardProps {
   track: Track;
+  /** World entries that name this track, listed under the player. */
+  entries?: EntryMeta[];
   className?: string;
 }
 
-export function TrackCard({ track, className }: TrackCardProps) {
+export function TrackCard({ track, entries = [], className }: TrackCardProps) {
+  const video = youtubeId(track.youtube);
+
   return (
     <article
       className={cn(
@@ -61,20 +69,50 @@ export function TrackCard({ track, className }: TrackCardProps) {
         </div>
       </div>
 
-      <AudioPlayer
-        id={track.id}
-        src={track.audio}
-        title={track.title}
-        className="mt-8"
-      />
+      {/*
+       * A song that's up on the channel plays as a video; everything else
+       * falls back to the waveform player, which handles an empty src by
+       * showing "audio coming soon".
+       */}
+      {video ? (
+        <div className="mt-8">
+          <YouTubeEmbed id={video} title={track.title} />
+        </div>
+      ) : (
+        <AudioPlayer
+          id={track.id}
+          src={track.audio}
+          title={track.title}
+          className="mt-8"
+        />
+      )}
 
-      {(track.tags?.length || track.links?.length) && (
+      {entries.length > 0 && (
+        <div className="mt-8 border-l-2 border-sage/40 pl-5">
+          <span className="label">In the world</span>
+          <ul className="mt-3 flex flex-col gap-1.5">
+            {entries.map((entry) => (
+              <li key={entry.slug}>
+                <Link
+                  href={`/world/${entry.slug}`}
+                  className="font-display text-lg lowercase leading-tight transition-colors hover:text-accent"
+                >
+                  {entry.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {(track.tags?.length || track.links?.length || video) && (
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
           {track.tags?.map((tag) => (
             <span key={tag} className="label">
               {tag}
             </span>
           ))}
+          {video && <YouTubeLink id={video} />}
           {track.links?.map((link) => (
             <a
               key={link.href}

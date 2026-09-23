@@ -4,7 +4,8 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-  { title: "Snippets", href: "/snippets" },
+  { title: "Songs", href: "/songs" },
+  { title: "World", href: "/world" },
   { title: "Writing", href: "/writing" },
   { title: "About", href: "/about" },
 ];

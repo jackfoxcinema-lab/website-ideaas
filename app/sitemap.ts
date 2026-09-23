@@ -5,14 +5,17 @@ export const dynamic = "force-static";
 
 import { siteConfig } from "@/config/site";
 import { getAllPosts } from "@/lib/posts";
+import { getAllEntries } from "@/lib/world";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/snippets", "/writing", "/about"].map((route) => ({
-    url: `${siteConfig.url}${route}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: route === "" ? 1 : 0.8,
-  }));
+  const routes = ["", "/songs", "/world", "/writing", "/about"].map(
+    (route) => ({
+      url: `${siteConfig.url}${route}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: route === "" ? 1 : 0.8,
+    })
+  );
 
   const posts = getAllPosts().map((post) => ({
     url: `${siteConfig.url}/writing/${post.slug}`,
@@ -21,5 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...routes, ...posts];
+  const entries = getAllEntries().map((entry) => ({
+    url: `${siteConfig.url}/world/${entry.slug}`,
+    lastModified: new Date(entry.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...routes, ...posts, ...entries];
 }

@@ -21,7 +21,7 @@ C++17 with no dependencies. A thin JUCE wrapper turns it into a plugin.
 | `src/dsp/GranularSwirl.*` | 5 s record buffer, 24-voice stochastic grain engine, freeze / micro-looper |
 | `src/dsp/LushReverb.*` | Pre-delay, 4-step Hadamard diffuser, 8-line Householder FDN with in-loop damping |
 | `src/dsp/PedalChain.*` | Owns the three modules, routing (6 orders, click-free switch), I/O stages |
-| `src/plugin/PluginProcessor.*` | JUCE `AudioProcessor` adapter (38 parameters, state save/restore) |
+| `src/plugin/PluginProcessor.*` | JUCE `AudioProcessor` adapter (38 parameters, JUCE's stock generic editor, state save/restore) |
 | `tests/render_and_test.cpp` | Offline verification, benchmark and demo renders |
 
 ## Real-time contract
@@ -83,6 +83,19 @@ strictness 10:
 cmake -S . -B build-plugin -DYARDSALE_BUILD_PLUGIN=ON -DJUCE_DIR=/path/to/JUCE
 cmake --build build-plugin
 ```
+
+**Prebuilt VST3s.** The `Pedal plugin` GitHub Actions workflow builds
+`Yard Sale.vst3` for Windows (x64, static runtime) and macOS (universal),
+runs pluginval on each, and attaches them as the run's artifacts. To install:
+
+- **Windows:** copy the `Yard Sale.vst3` folder to
+  `C:\Program Files\Common Files\VST3\`.
+- **macOS:** unzip, then copy to `~/Library/Audio/Plug-Ins/VST3/`. The build
+  is ad-hoc signed, not notarised, so clear the download quarantine first:
+  `xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/"Yard Sale.vst3"`.
+
+In FL Studio, open **Options → Manage plugins**, click **Find plugins**, and
+**Yard Sale** appears under Effects, from the vendor "Yard Sale Audio".
 
 On the Pi, the host loop is a JACK or ALSA callback that does
 `chain.setSettings(knobs.snapshot()); chain.processMonoToStereo(in, l, r, n);`.

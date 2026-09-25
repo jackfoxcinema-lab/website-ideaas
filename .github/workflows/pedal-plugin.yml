@@ -1,0 +1,82 @@
+name: Pedal plugin
+
+on:
+  push:
+    paths:
+      - "pedal/**"
+      - ".github/workflows/pedal-plugin.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vst3:
+    name: VST3 (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            os: windows-latest
+            # Static CRT: the .vst3 loads without the VC++ redistributable.
+            cmake_args: -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+          - name: macOS
+            os: macos-latest
+            # Universal binary: Apple Silicon and Intel Macs.
+            cmake_args: -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch JUCE
+        run: git clone --depth 1 --branch 8.0.4 https://github.com/juce-framework/JUCE.git JUCE
+
+      - name: Configure
+        # JUCE_DIR is relative to pedal/, which keeps Windows paths out of CMake.
+        run: >
+          cmake -S pedal -B build -DCMAKE_BUILD_TYPE=Release
+          -DYARDSALE_BUILD_PLUGIN=ON -DYARDSALE_BUILD_TESTS=OFF -DJUCE_DIR=../JUCE
+          ${{ matrix.cmake_args }}
+
+      - name: Build
+        run: cmake --build build --config Release --target YardSale_VST3 --parallel
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: mkdir -p dist && cp -r "build/YardSale_artefacts/Release/VST3/Yard Sale.vst3" dist/
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        # Ad-hoc sign, then zip with ditto so the bundle keeps its permissions
+        # and signature (plain artifact zips drop the executable bit).
+        run: |
+          codesign --force --deep --sign - "build/YardSale_artefacts/Release/VST3/Yard Sale.vst3"
+          mkdir -p dist
+          ditto -c -k --keepParent "build/YardSale_artefacts/Release/VST3/Yard Sale.vst3" "dist/Yard Sale.vst3 (macOS).zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YardSale-VST3-${{ matrix.name }}
+          path: dist/
+
+      - name: Validate with pluginval
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            curl -sSL -o pluginval.zip https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_Windows.zip
+            unzip -q pluginval.zip
+            PLUGINVAL=./pluginval.exe
+          else
+            curl -sSL -o pluginval.zip https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip
+            unzip -q pluginval.zip
+            PLUGINVAL=./pluginval.app/Contents/MacOS/pluginval
+          fi
+          status=0
+          "$PLUGINVAL" --strictness-level 10 --validate-in-process --timeout-ms 600000 \
+            --output-dir pluginval-logs "build/YardSale_artefacts/Release/VST3/Yard Sale.vst3" || status=$?
+          cat pluginval-logs/*.txt 2>/dev/null | tail -60 || true
+          exit $status

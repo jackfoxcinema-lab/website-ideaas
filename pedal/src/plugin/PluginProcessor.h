@@ -1,5 +1,5 @@
-// Thin JUCE adapter around yardsale::PedalChain. No editor: hosts show their
-// generic parameter UI. All DSP lives in src/dsp and builds without JUCE.
+// Thin JUCE adapter around yardsale::PedalChain, with JUCE's generic
+// parameter editor. All DSP lives in src/dsp and builds without JUCE.
 
 #pragma once
 
@@ -33,8 +33,10 @@ public:
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi) override;
     using juce::AudioProcessor::processBlock;
 
-    juce::AudioProcessorEditor* createEditor() override { return nullptr; }
-    bool hasEditor() const override { return false; }
+    // JUCE's stock slider-per-parameter editor, so hosts like FL Studio have
+    // controls to show. No custom GUI code.
+    juce::AudioProcessorEditor* createEditor() override { return new juce::GenericAudioProcessorEditor(*this); }
+    bool hasEditor() const override { return true; }
 
     const juce::String getName() const override { return "Yard Sale"; }
     bool acceptsMidi() const override { return false; }

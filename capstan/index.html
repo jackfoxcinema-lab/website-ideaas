@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Capstan</title>
 <meta name="description" content="A field tape recorder for your voice notes. Spin the platter to scrub.">
-<meta name="theme-color" content="#d4d5d2" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#232426" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e9e8e4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -40,7 +40,6 @@
       </svg>
       <div class="platter" id="platter" role="slider" tabindex="0" aria-label="Tape. Drag in a circle to scrub."
            aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="No tape loaded">
-        <div class="surface" aria-hidden="true"></div>
         <div class="rot" id="rot" aria-hidden="true">
           <svg class="engrave" viewBox="-50 -50 100 100">
             <defs><path id="rimPath" d="M -41.5 0 A 41.5 41.5 0 0 0 41.5 0"/></defs>
@@ -57,8 +56,6 @@
         </div>
         <div class="hub" aria-hidden="true"></div>
         <div class="rot screws" id="screws" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="blur" id="blur" aria-hidden="true"></div>
-        <div class="glare" aria-hidden="true"></div>
       </div>
     </div>
   </section>

@@ -1,6 +1,6 @@
 /* Offline cache. Bump VERSION on every deploy: the new worker installs a fresh,
    complete cache and the next launch uses it (all files from one version). */
-const VERSION = 'capstan-v1';
+const VERSION = 'capstan-v2';
 const ASSETS = [
   './', 'index.html', 'styles.css', 'app.js', 'dsp.js', 'worklet.js', 'export-worker.js',
   'manifest.webmanifest', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',

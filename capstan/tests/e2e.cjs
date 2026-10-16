@@ -98,9 +98,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   await shot('06-drive');
 
   console.log('pause, skip, cue');
+  await page.evaluate(() => { window.__msgs = []; const port = window.__capstan.A.node.port; const orig = port.postMessage.bind(port); port.postMessage = (m, t) => { window.__msgs.push(m.t); return orig(m, t); }; });
+  if (!(await S('S.playing'))) { await page.locator('#playKey').tap(); await sleep(800); } // short test tape may have ended
   await page.locator('#playKey').tap();
   await sleep(300);
   ok(!(await S('S.playing')), 'paused');
+  const sent = await page.evaluate(() => window.__msgs.filter((m) => m === 'play' || m === 'pause'));
+  ok(sent[sent.length - 1] === 'pause' && sent.filter((m) => m === 'pause').length === 1, `one press, one command (${sent.join(',')})`);
   const s0 = await S('S.pos / S.tapeSR');
   await page.locator('#ffKey').tap();
   await sleep(900);

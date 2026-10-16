@@ -40,7 +40,7 @@ The whole screen is the machine. There's one screen and no tab bar.
 │                     │ 0.01.37 [05]│   │  day / position / tape number
 │                     └─────────────┘   │
 │        ╭───────────────────────╮      │
-│      ╱   48/16  ╲               ╲     │  spun-aluminium platter, rotates with
+│      ╱   48/16  ╲               ╲     │  flat platter, rotates with
 │     │        ╲   ( hub )         │    │  the tape, 1 revolution = 1.8 s
 │     │         ╲          TYPE II │    │  tape pack grows around the hub
 │      ╲         ╲                ╱     │  progress ring in the recess
@@ -54,8 +54,8 @@ The whole screen is the machine. There's one screen and no tab bar.
 ```
 
 Visual language, taken from your three references:
-- **TP-7:** brushed aluminium body, the platter with its single engraved diagonal line and tiny printed specs, the black OLED with chunky pixel type and an inverted number badge, three big transport keys with seams, a grooved fader, and orange used only for record.
-- **Beat app:** warm greys, soft depth, a monospaced font for data (`0:01:37 · TYPE II`), a waveform with handles.
+- **TP-7:** the platter with its single diagonal line and tiny printed specs, the black OLED with chunky pixel type and an inverted number badge, three big transport keys, a two-groove fader, and orange used only for record. Rendered flat: solid fills and hairlines, no textures, gradients or shadows.
+- **Beat app:** warm greys, flat fills, latched keys that turn solid ink, a monospaced font for data (`0:01:37 · TYPE II`), a waveform with handles.
 - **Calendar:** huge bold numerals, a dot grid, a single orange "today" dot, a short motto in spaced capitals.
 
 Principles applied:
@@ -64,7 +64,7 @@ Principles applied:
 - **Match the real world (Nielsen #2, B):** the tape pack on the platter grows as you record or play through, so how much tape is wound shows progress without a progress bar.
 - **Signifiers (B):** the platter is printed "SPIN TO SCRUB", like the TP-7 prints its specs. There's no tooltip and no onboarding tour (vanilla trap, rejected).
 - **Visibility of status (B):** the OLED always says what the machine is doing: REC, PAUSE, ◀◀ 8.0x, DRIVE 62, SAVED.
-- **Contrast (WCAG):** engraved text #4E4F4C on #D6D7D4 is 5.4:1. OLED white on black is 18:1.
+- **Contrast (WCAG):** secondary text #5D5D59 on #E9E8E4 is 5.3:1. OLED white on black is 18:1.
 
 ## 4. Controls, and exactly what they do
 

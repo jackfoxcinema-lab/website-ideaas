@@ -17,7 +17,7 @@
 
   const el = {
     device: $('device'), led: $('led'), oled: $('oled'), oledCanvas: $('oledCanvas'),
-    platter: $('platter'), rot: $('rot'), screws: $('screws'), pack: $('pack'), blur: $('blur'), ringFill: $('ringFill'),
+    platter: $('platter'), rot: $('rot'), screws: $('screws'), pack: $('pack'), ringFill: $('ringFill'),
     specRate: $('specRate'), specStock: $('specStock'),
     tapesKey: $('tapesKey'), stockKey: $('stockKey'), stockName: $('stockName'), ffKey: $('ffKey'), rewKey: $('rewKey'),
     recKey: $('recKey'), playKey: $('playKey'), stopKey: $('stopKey'),
@@ -245,10 +245,9 @@
       el.oledCanvas.height = Math.max(32, Math.round(r.height * dpr));
       const bg = document.createElement('canvas');
       bg.width = el.oledCanvas.width; bg.height = el.oledCanvas.height;
-      const b = bg.getContext('2d'), cw = bg.width / 96, ch = bg.height / 32, g = Math.max(0.6, cw * 0.16);
-      b.fillStyle = '#060606'; b.fillRect(0, 0, bg.width, bg.height);
-      b.fillStyle = '#0f0f0f';
-      for (let y = 0; y < 32; y++) for (let x = 0; x < 96; x++) b.fillRect(x * cw + g / 2, y * ch + g / 2, cw - g, ch - g);
+      const b = bg.getContext('2d');
+      b.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--oled').trim() || '#0b0b0b';
+      b.fillRect(0, 0, bg.width, bg.height);
       this.bg = bg; this.key = '';
     },
     clear() { this.fb.fill(0); },
@@ -264,7 +263,7 @@
       return x;
     },
     flush() {
-      const c = el.oledCanvas, ctx = this.ctx, cw = c.width / 96, ch = c.height / 32, g = Math.max(0.6, cw * 0.16);
+      const c = el.oledCanvas, ctx = this.ctx, cw = c.width / 96, ch = c.height / 32, g = Math.max(0.5, cw * 0.12);
       if (this.bg) ctx.drawImage(this.bg, 0, 0);
       ctx.fillStyle = '#f3f3ee';
       for (let y = 0; y < 32; y++) for (let x = 0; x < 96; x++) if (this.fb[y * 96 + x]) ctx.fillRect(x * cw + g / 2, y * ch + g / 2, cw - g, ch - g);
@@ -642,9 +641,11 @@
   // ------------------------------------------------------------------ cue keys
   function bindCue(btn, dir) {
     let pid = null, cueing = false, t1 = 0, t2 = 0;
+    let pressedAt = -1e9;
     btn.addEventListener('pointerdown', (e) => {
       if (e.button > 0 || pid != null) return;
       e.preventDefault();
+      pressedAt = performance.now();
       if (S.rec) { flash('LOCKED', 'RECORDING', 1200); return; }
       if (!S.cur) { flash('NO TAPE', 'PRESS * REC', 1800); return; }
       unlock();
@@ -663,7 +664,7 @@
     };
     btn.addEventListener('pointerup', (e) => end(e, false));
     btn.addEventListener('pointercancel', (e) => end(e, true));
-    btn.addEventListener('click', (e) => { if (e.detail === 0) skip(dir); }); // keyboard
+    btn.addEventListener('click', () => { if (performance.now() - pressedAt > 3000) skip(dir); }); // keyboard, VoiceOver
   }
 
   // ------------------------------------------------------------------ stock + drive
@@ -779,27 +780,25 @@
     return { l1: dayLabel(S.cur.createdAt), l2: fmtTime(sec) + (S.playing ? ' >' : ''), badge: pad2(S.cur.num), bar: S.len ? pos / S.len : 0 };
   }
 
-  let lastDeg = null, lastPk = null, lastRing = null, lastBlur = null, lastLed = '';
+  let lastDeg = null, lastPk = null, lastRing = null, lastLed = '';
   function frame(now) {
     requestAnimationFrame(frame);
     if (document.hidden) return;
     const r = S.rec;
-    let sec = 0, ring = 0, speed = 0;
-    if (r) { sec = r.samples / r.sr; ring = sec / SIDE_SEC; speed = r.paused ? 0 : 1; }
+    let sec = 0, ring = 0;
+    if (r) { sec = r.samples / r.sr; ring = sec / SIDE_SEC; }
     else if (S.cur && S.len) {
       const p = S.dragging ? S.dragPos : estPos(now);
-      sec = p / S.tapeSR; ring = p / S.len; speed = Math.abs(S.v);
+      sec = p / S.tapeSR; ring = p / S.len;
     }
     const deg = Math.round(((sec / SEC_PER_REV) * 360) % 360 * 100) / 100;
     if (deg !== lastDeg) { lastDeg = deg; const tf = `rotate(${deg}deg)`; el.rot.style.transform = tf; el.screws.style.transform = tf; }
     // tape pack: wound tape area grows linearly with time, so radius grows with sqrt
-    const hub = 0.47, frac = clamp(sec / SIDE_SEC, 0, 1);
+    const hub = 0.455, frac = clamp(sec / SIDE_SEC, 0, 1); // starts just inside the hub, so no ring shows on an empty reel
     const pk = Math.round(Math.sqrt(hub * hub + (1 - hub * hub) * frac) * 1000) / 1000;
     if (pk !== lastPk) { lastPk = pk; el.pack.style.setProperty('--pk', pk); }
     const ro = Math.round(1000 - clamp(ring, 0, 1) * 1000);
     if (ro !== lastRing) { lastRing = ro; el.ringFill.style.strokeDashoffset = ro; }
-    const bl = Math.round(clamp((speed - 2.5) / 14, 0, 0.55) * 100) / 100;
-    if (bl !== lastBlur) { lastBlur = bl; el.blur.style.opacity = bl; }
     // LED: glows with input level while recording, blinks while arming or paused
     let led = 'off';
     if (S.arming || (r && r.paused)) led = 'blink';
@@ -1093,34 +1092,15 @@
     else if (S.playing) pause();
   }
 
-  // textures: brushed panel + spun platter, drawn once
-  function makeTextures() {
-    const dark = matchMedia('(prefers-color-scheme: dark)').matches;
-    let seed = 11;
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const b = document.createElement('canvas'); b.width = 600; b.height = 300;
-    const bx = b.getContext('2d');
-    for (let i = 0; i < 1500; i++) {
-      const y = Math.floor(rnd() * 300), x = rnd() * 600, len = 60 + rnd() * 380;
-      bx.fillStyle = rnd() > 0.5 ? `rgba(255,255,255,${(dark ? 0.012 : 0.03) + rnd() * 0.05})` : `rgba(0,0,0,${(dark ? 0.03 : 0.015) + rnd() * 0.03})`;
-      bx.fillRect(x, y, len, 1); bx.fillRect(x - 600, y, len, 1);
-    }
-    document.documentElement.style.setProperty('--brushed', `url(${b.toDataURL('image/png')})`);
-    const s = document.createElement('canvas'); s.width = s.height = 512;
-    const sx = s.getContext('2d');
-    for (let r = 2; r < 256; r += 0.75) {
-      sx.strokeStyle = rnd() > 0.5 ? `rgba(255,255,255,${(dark ? 0.015 : 0.05) + rnd() * 0.07})` : `rgba(0,0,0,${0.015 + rnd() * 0.035})`;
-      sx.lineWidth = 0.7;
-      sx.beginPath(); sx.arc(256, 256, r, 0, Math.PI * 2); sx.stroke();
-    }
-    document.documentElement.style.setProperty('--spun', `url(${s.toDataURL('image/png')})`);
-  }
-
   // ------------------------------------------------------------------ wiring
+  // Transport keys act on press, like hardware. The click that follows a press
+  // is ignored; a click with no press before it (keyboard, VoiceOver) acts.
   function pressKey(btn, fn) {
+    let pressedAt = -1e9;
     btn.addEventListener('pointerdown', (e) => {
       if (e.button > 0) return;
       e.preventDefault();
+      pressedAt = performance.now();
       btn.classList.add('down');
       fn();
     });
@@ -1128,7 +1108,7 @@
     btn.addEventListener('pointerup', up);
     btn.addEventListener('pointercancel', up);
     btn.addEventListener('pointerleave', up);
-    btn.addEventListener('click', (e) => { if (e.detail === 0) fn(); }); // keyboard and VoiceOver
+    btn.addEventListener('click', () => { if (performance.now() - pressedAt > 1500) fn(); });
   }
 
   function wire() {
@@ -1184,11 +1164,11 @@
     document.addEventListener('visibilitychange', onHidden);
     window.addEventListener('pagehide', () => { if (S.rec) stopRecording({ reason: 'background' }); });
     window.addEventListener('resize', () => oled.resize());
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => oled.resize());
   }
 
   // ------------------------------------------------------------------ boot
   async function boot() {
-    makeTextures();
     oled.resize();
     wire();
     renderStatic(); renderKeys();
